@@ -5,7 +5,7 @@ const customTheme = extendTheme({
   colors: {
     brand: {
       background: '#1e1e2e',     // Dark purple-blue
-      primary: '#4ade80',        // Lime green
+      primary: '#1e1e3e',        // Lime green
       secondary: '#64748b',      // Cool gray
       textPrimary: '#ffffff',    // White
       textSecondary: '#d1d5db',  // Light gray

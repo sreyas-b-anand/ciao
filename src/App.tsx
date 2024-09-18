@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Dashboard from "./pages/Dashboard"
+import Dashboard from "./pages/dashboard/Dashboard"
 import Profile from "./pages/Profile"
 import History from "./pages/History"
 import Chat from "./pages/Chat"
@@ -13,8 +13,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing/>}/>
-          <Route path="/register" element={<Register/>}/>
-          <Route path="/" element={<Landing/>}/>
+          <Route path="/user" element={<Register/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/chat" element={<Chat/>}/>
           <Route path="/profile" element={<Profile/>}/>

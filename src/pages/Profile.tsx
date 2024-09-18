@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar/Navbar";
 const Profile = () => {
   return (
     <>
-      <Container maxWidth={"100vw"} maxHeight={"100vh"} padding={0}>
+      <Container maxWidth={"100vw"} maxHeight={"100vh"} padding={0} backgroundColor={'brand.background'}>
         <Navbar />
       </Container>
     </>

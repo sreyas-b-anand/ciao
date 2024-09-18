@@ -69,7 +69,7 @@ const Landing = () => {
             color="brand.textPrimary"
             borderRadius={"10px"}
           >
-            <Link to={"register"}>Register</Link>
+            <Link to={"user"}>Get Started</Link>
           </ChakraLink>
           <ChakraLink
           fontFamily={"Montserrat"}
@@ -81,7 +81,7 @@ const Landing = () => {
             color="brand.textPrimary"
             borderRadius={"10px"}
           >
-            <Link to={"login"}>Login</Link>
+            <Link to={"https://github.com/sreyas-b-anand/sreyas-b-anand"} target="_blank" rel="noopener ">Meet dev</Link>
           </ChakraLink>
         </Box>
       </Container>

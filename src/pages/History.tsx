@@ -3,9 +3,9 @@ import Navbar from "../components/Navbar/Navbar"
 
 const History = () => {
   return (
-    <Container maxWidth={'100vw'} maxHeight={'100vh'} padding={0}>
-      <Navbar/>
-    </Container>
+    <Container maxWidth={"100vw"} maxHeight={"100vh"} padding={0} backgroundColor={'brand.background'}>
+        <Navbar />
+      </Container>
   )
 }
 
