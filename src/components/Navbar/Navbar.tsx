@@ -1,5 +1,6 @@
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import ChatOption from "./ChatOption";
 
 const Navbar = () => {
   return (
@@ -22,9 +23,8 @@ const Navbar = () => {
             fontFamily={"Montserrat"}
           >
             <Link to={"/dashboard"}>Home</Link>
-            <Link to={"/chat"}>Chat</Link>
-            <Link to={"/history"}>History</Link>
-            <Link to={"/profile"}>Profile</Link>
+            <ChatOption/>
+            <Link to={"/tasks"}>Your Tasks</Link>
           </Flex>
         </Flex>
       </Container>

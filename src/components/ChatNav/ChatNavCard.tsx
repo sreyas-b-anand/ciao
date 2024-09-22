@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Link as ChakraLink, Text, Box, Image } from "@chakra-ui/react";
-import logo from "./images/ch.jpeg";
+import logo from "../../assets/ailogo/ch.jpeg";
 const ChatNavCard = () => {
   return (
     <>

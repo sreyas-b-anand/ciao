@@ -1,6 +1,6 @@
 import { Container } from "@chakra-ui/react";
 import Navbar from "../components/Navbar/Navbar";
-const Profile = () => {
+const Tasker = () => {
   return (
     <>
       <Container maxWidth={"100vw"} maxHeight={"100vh"} padding={0} backgroundColor={'brand.background'}>
@@ -10,4 +10,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Tasker

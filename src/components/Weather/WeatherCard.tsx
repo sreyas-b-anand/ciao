@@ -25,17 +25,19 @@ interface PositionError {
 import sun from "./images/sun.png";
 import { Flex, Image, Text, Box } from "@chakra-ui/react";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import Loading from "../loader/Loading";
 const WeatherCard = () => {
   const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
   const [data, setData] = useState<WeatherData | null>();
   const [error, setError] = useState<string | null>(null);
-
- 
+  const [loading, setLoading] = useState(true);
+  setTimeout(() => {
+    setLoading(false);
+  }, 1000);
   let latitude: number | null = null;
   let longitude: number | null = null;
 
-  
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
       (position: Position) => {
@@ -74,7 +76,7 @@ const WeatherCard = () => {
       }
     };
     fetchData();
-  }, [apiKey , latitude , longitude]);
+  }, [apiKey, latitude, longitude]);
   return (
     <>
       <Flex
@@ -88,38 +90,42 @@ const WeatherCard = () => {
         width={"400px"}
         backgroundColor={"brand.primary"}
         flexDirection={"column"}
+        justifyContent={'center'}
       >
-        {data && (
-          <>
-            <Flex
-              direction={"column"}
-              width={"100%"}
-              alignItems={"center"}
-              justifyContent={"center"}
-            >
-              <Text fontSize={"25px"}>Current Location</Text>
-              <Flex direction={"row"} gap={"3"} color={"brand.textSecondary"}>
-                <Text fontSize={"10px"}>{data?.location.localtime}</Text>
-                <Text fontSize={"10px"}>{data?.current.condition.text}</Text>
-              </Flex>
-            </Flex>
-            <Flex width={"100%"} justifyContent={"space-evenly"} pt={3}>
+        {loading && <Loading />}
+        <Suspense fallback={<Loading />}>
+          {data && !loading && (
+            <>
               <Flex
                 direction={"column"}
-                flexWrap={"wrap"}
+                width={"100%"}
+                alignItems={"center"}
                 justifyContent={"center"}
               >
-                <Text fontSize={"30px"}>{data?.current.temp_c}'C</Text>
-                <Text fontSize={"12px"} color={"brand.textSecondary"}>
-                  feels like {data?.current.feelslike_c}
-                </Text>
+                <Text fontSize={"25px"}>Current Location</Text>
+                <Flex direction={"row"} gap={"3"} color={"brand.textSecondary"}>
+                  <Text fontSize={"10px"}>{data?.location.localtime}</Text>
+                  <Text fontSize={"10px"}>{data?.current.condition.text}</Text>
+                </Flex>
               </Flex>
-              <Box>
-                <Image src={sun} alt="weather" height="130px" width="130px" />
-              </Box>
-            </Flex>
-          </>
-        )}
+              <Flex width={"100%"} justifyContent={"space-evenly"} pt={3}>
+                <Flex
+                  direction={"column"}
+                  flexWrap={"wrap"}
+                  justifyContent={"center"}
+                >
+                  <Text fontSize={"30px"}>{data?.current.temp_c}'C</Text>
+                  <Text fontSize={"12px"} color={"brand.textSecondary"}>
+                    feels like {data?.current.feelslike_c}
+                  </Text>
+                </Flex>
+                <Box>
+                  <Image src={sun} alt="weather" height="130px" width="130px" />
+                </Box>
+              </Flex>
+            </>
+          )}
+        </Suspense>
         {error && (
           <>
             <Text

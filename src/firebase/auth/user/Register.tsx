@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  createContext, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { auth } from "../../firebase"; 
 import { useNavigate } from "react-router-dom";
-
+export const UserContext = createContext(null)
 const Register = () => {
   const navigate = useNavigate()
   const [isRegister, setIsRegister] = useState(true);
