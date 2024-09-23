@@ -18,7 +18,7 @@ import aiLogo from "../assets/ailogo/ch.jpeg";
 import { CgProfile } from "react-icons/cg";
 
 const ChatInterface = () => {
-  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMIpNI_API_KEY);
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
   const [value, setValue] = useState<string | null>("hello");
   const [previousText, setPrevioustext] = useState<string | null>("");

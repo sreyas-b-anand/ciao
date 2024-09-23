@@ -30,6 +30,7 @@ const Register = () => {
         // Registration successful
         setError(null);
         
+        
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         // Login successful
