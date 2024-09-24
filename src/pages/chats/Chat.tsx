@@ -9,12 +9,12 @@ import {
   Flex,
   Image,
 } from "@chakra-ui/react";
-import { db } from "../firebase/firebase"; // Adjust the path as needed
+import { db } from "../../firebase/firebase"; // Adjust the path as needed
 import { collection, addDoc } from "firebase/firestore";
-import Navbar from "../components/Navbar/Navbar";
-import Tabbar from "../components/Navbar/Tabbar";
-import useFetch from "../hooks/useFetch";
-import aiLogo from "../assets/ailogo/ch.jpeg";
+import Navbar from "../../components/Navbar/Navbar";
+import Tabbar from "../../components/Navbar/Tabbar";
+import useFetch from "../../hooks/useFetch";
+import aiLogo from "../../assets/ailogo/ch.jpeg";
 import { CgProfile } from "react-icons/cg";
 
 const ChatInterface = () => {

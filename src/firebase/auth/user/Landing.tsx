@@ -81,7 +81,7 @@ const Landing = () => {
             color="brand.textPrimary"
             borderRadius={"10px"}
           >
-            <Link to={"https://github.com/sreyas-b-anand/sreyas-b-anand"} target="_blank" rel="noopener ">Meet dev</Link>
+            <Link to={"https://github.com/sreyas-b-anand/sreyas-b-anand"} target="_blank" rel="noopener ">GitHub</Link>
           </ChakraLink>
         </Box>
       </Container>

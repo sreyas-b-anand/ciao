@@ -1,4 +1,6 @@
-import {  createContext, useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -13,38 +15,55 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import { auth } from "../../firebase"; 
+import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
-export const UserContext = createContext(null)
+
 const Register = () => {
-  const navigate = useNavigate()
-  const [isRegister, setIsRegister] = useState(true);
+  const navigate = useNavigate();
+  const [isRegister, setIsRegister] = useState<boolean | null>(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw Error("Firebase error occured");
+  }
+  const { dispatch } = authContext;
   const handleAuth = async () => {
     try {
       if (isRegister) {
         await createUserWithEmailAndPassword(auth, email, password);
         // Registration successful
         setError(null);
-        
-        
+
+       await auth.onAuthStateChanged((userAuth) => {
+          console.log(userAuth);
+        dispatch({
+            type: "LOGIN",
+            payload: userAuth,
+          });
+        });
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         // Login successful
         setError(null);
+       await auth.onAuthStateChanged((userAuth) => {
+          console.log(userAuth);
+          dispatch({
+            type: "LOGIN",
+            payload: userAuth,
+          });
+        });
       }
-      navigate('/dashboard')
+      navigate("/dashboard");
     } catch (err) {
-      const error = err as Error
-      setError(error.message)
-      setTimeout(()=>{
-        setError(null)
-      } , 3000)
+      const error = err as Error;
+      setError(error.message);
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
 
-      clearTimeout(11)
+      clearTimeout(10);
     }
   };
 
@@ -81,7 +100,7 @@ const Register = () => {
         >
           {isRegister ? "Register" : " Login "}
         </Heading>
-       
+
         <Stack spacing={4}>
           <FormControl id="email">
             <FormLabel>Email</FormLabel>
@@ -100,10 +119,9 @@ const Register = () => {
             />
           </FormControl>
           <Button backgroundColor="brand.primary" onClick={handleAuth}>
-            {isRegister ? "Register" : " Login " }
-            
+            {isRegister ? "Register" : " Login "}
           </Button>
-          
+
           <Button
             variant="link"
             color="brand.textSecondary"

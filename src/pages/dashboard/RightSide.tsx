@@ -21,7 +21,7 @@ const RightSide = () => {
         >
           <Welcome />
           <Flex
-            direction={"row"}
+            
             gap={6}
             alignItems={"center"}
             flexWrap={"wrap"}

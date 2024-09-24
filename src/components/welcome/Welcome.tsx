@@ -6,7 +6,7 @@ const Welcome = () => {
    <>
     <Container display={'flex'} textAlign={'center'} flexDirection={'column'} gap={3} p={5} m={2} >
     <Text color={'brand.textPrimary'} fontFamily={'Montserrat'} fontSize={'40px'} fontWeight={600}>Welcome to CIAO</Text>
-    <Text color={'brand.textSecondary'} fontFamily={'Montserrat'} fontSize={'17px'}>Your Personel AI Assistant</Text>
+    <Text color={'brand.textSecondary'} fontFamily={'Montserrat'} fontSize={'17px'}>Your Personal AI Assistant</Text>
     </Container>
    </>
   )

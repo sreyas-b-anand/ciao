@@ -1,10 +1,10 @@
 import {  useEffect, useRef } from "react";
 
-import Navbar from "../components/Navbar/Navbar";
-import useFetch from "../hooks/useFetch";
-import Tabbar from "../components/Navbar/Tabbar";
+import Navbar from "../../components/Navbar/Navbar";
+import useFetch from "../../hooks/useFetch";
+import Tabbar from "../../components/Navbar/Tabbar";
 import { Box, VStack, Text, Flex , Image} from "@chakra-ui/react";
-import aiLogo from "../assets/ailogo/ch.jpeg";
+import aiLogo from "../../assets/ailogo/ch.jpeg";
 import { CgProfile } from "react-icons/cg";
 
 

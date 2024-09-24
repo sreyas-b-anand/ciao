@@ -1,8 +1,31 @@
-import { Container, Flex, Heading } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Container, Flex, Heading, Button } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
 import ChatOption from "./ChatOption";
+import { auth } from "../../firebase/firebase";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("Firebase authentication error");
+  }
+  const { dispatch } = authContext;
+  const navigate = useNavigate();
+  const handleClick = () => {
+    auth
+      .signOut()
+      .then(() => {
+        dispatch({
+          type: "LOGOUT",
+          payload: null,
+        });
+        navigate("/");
+      })
+      .catch((err: Error) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <Container
@@ -12,8 +35,11 @@ const Navbar = () => {
         backgroundColor={"#2d3748"}
         color={"#d1d5db"}
         p={8}
+        display={'flex'}
+        flexDirection={'column'}
+        justifyContent={'space-between'}
       >
-        <Flex alignItems={"flex-start"} gap={8} flexDirection={"column"}>
+        <Flex alignItems={"flex-start"}  gap={8} flexDirection={"column"}>
           <Heading fontFamily={"Montserrat"}>CIAO</Heading>
           <Flex
             direction={"column"}
@@ -23,9 +49,12 @@ const Navbar = () => {
             fontFamily={"Montserrat"}
           >
             <Link to={"/dashboard"}>Home</Link>
-            <ChatOption/>
+            <ChatOption />
             <Link to={"/tasks"}>Your Tasks</Link>
           </Flex>
+        </Flex>
+        <Flex >
+          <Button onClick={handleClick}>LOG OUT</Button>
         </Flex>
       </Container>
     </>

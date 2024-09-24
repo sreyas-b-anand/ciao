@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Dashboard from "./pages/dashboard/Dashboard"
-import History from "./pages/History"
-import Landing from "./firebase/auth/Landing"
+import History from "./pages/chats/History"
+import Landing from "./firebase/auth/user/Landing"
 import Register from "./firebase/auth/user/Register"
-import ChatInterface from "./pages/Chat"
+import ChatInterface from "./pages/chats/Chat"
 import Tasker from "./pages/Tasker"
 import NotFound from "./pages/NotFound"
 
