@@ -2,15 +2,10 @@ import { Container, Flex, Heading, Button } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import ChatOption from "./ChatOption";
 import { auth } from "../../firebase/firebase";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import useAuthContext from "../../hooks/useAuthContext";
 
 const Navbar = () => {
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
-    throw new Error("Firebase authentication error");
-  }
-  const { dispatch } = authContext;
+ const {dispatch } = useAuthContext()
   const navigate = useNavigate();
   const handleClick = () => {
     auth
@@ -54,7 +49,8 @@ const Navbar = () => {
           </Flex>
         </Flex>
         <Flex >
-          <Button onClick={handleClick}>LOG OUT</Button>
+          
+          <Button onClick={handleClick} bg={'inherit'} _hover={{bg:'inherit'}} fontSize={'15px'} color={'brand.error'}>Log Out</Button>
         </Flex>
       </Container>
     </>

@@ -40,7 +40,7 @@ const ChatNavCard = () => {
               justifyContent={"center"}
               alignItems={"center"}
             >
-              <Image src={logo} alt="logo" height={"40px"} width={"40px"} />
+              <Image src={logo} alt="logo" height={"40px"} width={"40px"} borderRadius={'50%'} />
             </Flex>
             <Text color={"brand.textPrimary"} textAlign={"center"}>
               Hello! How can I assist you today?{" "}

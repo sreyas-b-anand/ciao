@@ -1,36 +1,35 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 import ChatNavCard from "../../components/ChatNav/ChatNavCard";
 import WeatherCard from "../../components/Weather/WeatherCard";
 import Welcome from "../../components/welcome/Welcome";
-import Tabbar from "../../components/Navbar/Tabbar";
+
 
 const RightSide = () => {
   return (
     <>
       <Flex direction={"column"} gap={1} flex={1} p={3}>
-        <Tabbar />
-        <Flex
+        
+        <Stack
           direction={"column"}
           alignItems={"center"}
-          p={4}
-          px={8}
+          p={2}
+          px={4}
           gap={"3"}
-          width={"100%"}
-          height={"100vh"}
+          minHeight={"100vh"}
+          minW={"100%"}
           flexWrap={"wrap"}
         >
           <Welcome />
           <Flex
-            
             gap={6}
             alignItems={"center"}
             flexWrap={"wrap"}
-            p={5}
+            justifyContent={"center"}
           >
             <ChatNavCard />
             <WeatherCard />
           </Flex>
-        </Flex>
+        </Stack>
       </Flex>
     </>
   );

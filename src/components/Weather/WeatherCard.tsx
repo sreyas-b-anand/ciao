@@ -54,8 +54,7 @@ const WeatherCard = () => {
     setError("Error");
   }
 
-  // You can now use `latitude` and `longitude` elsewhere in your code
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -102,7 +101,7 @@ const WeatherCard = () => {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                <Text fontSize={"25px"}>Current Location</Text>
+                <Text fontSize={"25px"}>Your Location</Text>
                 <Flex direction={"row"} gap={"3"} color={"brand.textSecondary"}>
                   <Text fontSize={"10px"}>{data?.location.localtime}</Text>
                   <Text fontSize={"10px"}>{data?.current.condition.text}</Text>

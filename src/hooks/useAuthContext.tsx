@@ -8,9 +8,9 @@ const useAuthContext = () => {
   if (!authContext) {
     throw new Error("Firebase authentication error");
   }
-  const { user } = authContext;
+  const context = authContext;
 
-  return user;
+  return context;
 };
 
 export default useAuthContext;
