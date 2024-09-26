@@ -24,6 +24,7 @@ const Navbar = () => {
   return (
     <>
       <Container
+      position={'static'}
         maxWidth={"250px"}
         height={"100vh"}
         margin={0}

@@ -105,6 +105,7 @@ const Register = () => {
           <FormControl id="email">
             <FormLabel>Email</FormLabel>
             <Input
+            required
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -113,6 +114,7 @@ const Register = () => {
           <FormControl id="password">
             <FormLabel>Password</FormLabel>
             <Input
+            required
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
