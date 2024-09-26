@@ -35,6 +35,7 @@ const ChatNavCard = () => {
             gap={3}
             flexDirection={"column"}
           >
+            
             <Flex
               width={"100%"}
               justifyContent={"center"}
