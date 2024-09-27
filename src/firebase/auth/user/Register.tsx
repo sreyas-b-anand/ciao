@@ -36,9 +36,9 @@ const Register = () => {
         // Registration successful
         setError(null);
 
-       await auth.onAuthStateChanged((userAuth) => {
+        await auth.onAuthStateChanged((userAuth) => {
           console.log(userAuth);
-        dispatch({
+          dispatch({
             type: "LOGIN",
             payload: userAuth,
           });
@@ -47,7 +47,7 @@ const Register = () => {
         await signInWithEmailAndPassword(auth, email, password);
         // Login successful
         setError(null);
-       await auth.onAuthStateChanged((userAuth) => {
+        await auth.onAuthStateChanged((userAuth) => {
           console.log(userAuth);
           dispatch({
             type: "LOGIN",
@@ -105,7 +105,7 @@ const Register = () => {
           <FormControl id="email">
             <FormLabel>Email</FormLabel>
             <Input
-            required
+              required
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -114,7 +114,7 @@ const Register = () => {
           <FormControl id="password">
             <FormLabel>Password</FormLabel>
             <Input
-            required
+              required
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

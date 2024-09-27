@@ -16,7 +16,7 @@ import { useState } from "react";
 const Tasker = () => {
   const { user } = useAuthContext();
   console.log("in tasker", user?.email);
-  const arr = [1, 2, 3, 4 , 5 , 6 , 7 , 8 , 4 , 5 , 6 ,6, 6];
+  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 4, 5, 6, 6, 6];
 
   //tasks
   const hello: boolean = true;
@@ -28,10 +28,8 @@ const Tasker = () => {
   };
   return (
     <>
-    
-    
       <Flex
-      fontFamily={'Montserrat'}
+        fontFamily={"Montserrat"}
         minWidth={"100vw"}
         minHeight={"100vh"}
         padding={0}
@@ -39,14 +37,21 @@ const Tasker = () => {
         direction={"row"}
         zIndex={-2}
       >
-    <Navbar />
-        
-        <Flex flex={1} direction={"column"} p={3} >
+        <Navbar />
+
+        <Flex flex={1} direction={"column"} p={3}>
           <Tabbar flexProp={1} />
-          <Heading py={5}  textAlign={'center'} fontSize={'23px'} color={'brand.textPrimary'}>Add Your To-Do's Here</Heading>
+          <Heading
+            py={5}
+            textAlign={"center"}
+            fontSize={"23px"}
+            color={"brand.textPrimary"}
+          >
+            Add Your To-Do's Here
+          </Heading>
           {user || hello ? (
             <>
-              <Flex fontFamily={"Montserrat"} color={"white"} >
+              <Flex fontFamily={"Montserrat"} color={"white"}>
                 <Flex
                   className="flexx"
                   flex={1}
@@ -54,9 +59,7 @@ const Tasker = () => {
                   gap={3}
                   justifyContent={"center"}
                 >
-                  <form
-                    onSubmit={handleClick}
-                  >
+                  <form onSubmit={handleClick}>
                     <FormControl
                       isInvalid={isError}
                       display={"flex"}
@@ -87,8 +90,8 @@ const Tasker = () => {
                 </Flex>
               </Flex>
               <Flex
-              fontFamily={'Montserrat'}
-              flexWrap={"wrap"}
+                fontFamily={"Montserrat"}
+                flexWrap={"wrap"}
                 alignItems={"center"}
                 justifyContent={"center"}
                 gap={3}

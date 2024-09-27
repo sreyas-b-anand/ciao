@@ -61,7 +61,7 @@ const Landing = () => {
 
         <Box display={"flex"} alignItems={"center"} gap={5}>
           <ChakraLink
-          fontFamily={"Montserrat"}
+            fontFamily={"Montserrat"}
             textDecoration={"none"}
             p={2}
             _hover={{ textDecoration: "none", color: "brand.textSecondary" }}
@@ -72,7 +72,7 @@ const Landing = () => {
             <Link to={"user"}>Get Started</Link>
           </ChakraLink>
           <ChakraLink
-          fontFamily={"Montserrat"}
+            fontFamily={"Montserrat"}
             _hover={{ textDecoration: "none", color: "brand.textSecondary" }}
             textDecoration={"none"}
             p={2}
@@ -81,7 +81,13 @@ const Landing = () => {
             color="brand.textPrimary"
             borderRadius={"10px"}
           >
-            <Link to={"https://github.com/sreyas-b-anand/sreyas-b-anand"} target="_blank" rel="noopener ">GitHub</Link>
+            <Link
+              to={"https://github.com/sreyas-b-anand/sreyas-b-anand"}
+              target="_blank"
+              rel="noopener "
+            >
+              GitHub
+            </Link>
           </ChakraLink>
         </Box>
       </Container>
