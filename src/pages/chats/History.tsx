@@ -65,16 +65,22 @@ const History = () => {
                     <Flex
                       key={msg.id}
                       alignItems={
-                        msg.sender == `${user?.email}assistant` ? "flex-start" : "flex-end"
+                        msg.sender == `${user?.email}assistant`
+                          ? "flex-start"
+                          : "flex-end"
                       }
                       justifyContent={
-                        msg.sender == `${user?.email}assistant` ? "flex-start" : "flex-end"
+                        msg.sender == `${user?.email}assistant`
+                          ? "flex-start"
+                          : "flex-end"
                       }
                     >
                       <Flex
                         gap={2}
                         flexDirection={
-                          msg.sender == `${user?.email}assistant` ? "row" : "row-reverse"
+                          msg.sender == `${user?.email}assistant`
+                            ? "row"
+                            : "row-reverse"
                         }
                       >
                         {msg.sender == `${user?.email}assistant` ? (
