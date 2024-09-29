@@ -61,7 +61,7 @@ const useFetch = (value: boolean) => {
           ...doc.data(),
         })) as messageType[];
         setMessages(messagesData);
-        console.log(messagesData)
+        console.log(messagesData)/////////////////////////////////////////////
       },
       (err: Error) => {
         setError("An error occurred while fetching data: " + err.message);

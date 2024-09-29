@@ -12,19 +12,40 @@ import Navbar from "../components/Navbar/Navbar";
 import useAuthContext from "../hooks/useAuthContext";
 import Tabbar from "../components/Navbar/Tabbar";
 import TaskCard from "../components/TaskerCard/TaskCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { collection, addDoc, query, onSnapshot, DocumentData } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 const Tasker = () => {
   const { user } = useAuthContext();
   console.log("in tasker", user?.email);
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 4, 5, 6, 6, 6];
+  const [ tasks , setTasks] = useState<DocumentData>()
+  useEffect(() => {
+    const q = query(collection(db, "tasks"));
+    const tasksData: DocumentData[] = [];
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        tasksData.push(doc.data());
+      });
+      console.log( tasksData);
+      setTasks(tasksData)
+    });
+    return () => unsubscribe();
+  }, []);
 
   //tasks
-  const hello: boolean = true;
-  const [input, setInput] = useState<string>();
+  const hello: boolean = true; //////////////////////////////////////////////////
+  const [input, setInput] = useState<string>("");
   console.log("input", input);
   const isError = input === "";
-  const handleClick = () => {
-    return;
+  const handleClick = async () => {
+    await addDoc(collection(db, "tasks"), {
+      task: input,
+      user: user?.email,
+      timestamp: new Date(),
+      status: "pending",
+    }).then(() => {
+      console.log("submitted");
+    });
   };
   return (
     <>
@@ -98,9 +119,7 @@ const Tasker = () => {
                 flex={1}
                 py={3}
               >
-                {arr.map((el, index) => {
-                  return <TaskCard el={el} key={index} />;
-                })}
+                <TaskCard el={1} />
               </Flex>
             </>
           ) : (
