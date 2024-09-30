@@ -61,7 +61,7 @@ const useFetch = (value: boolean) => {
           ...doc.data(),
         })) as messageType[];
         setMessages(messagesData);
-        console.log(messagesData)/////////////////////////////////////////////
+        /////////////////////////////////////////////
       },
       (err: Error) => {
         setError("An error occurred while fetching data: " + err.message);
@@ -71,7 +71,7 @@ const useFetch = (value: boolean) => {
   
     // Cleanup function to unsubscribe from the snapshot listener
     return () => unsubscribe();
-  }, [value, user , startDate]); // Make sure 'user' is also a dependency
+  }, [user , messages , value , startDate]); 
   
   return { messages, error };
 };

@@ -25,9 +25,9 @@ const ChatInterface = () => {
   const [value, setValue] = useState<string | null>("hello");
   const [previousText, setPrevioustext] = useState<string | null>("");
   const [responseText, setResponsetext] = useState<string | null>("");
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   useEffect(() => {
     setPrevioustext(value);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const prompt = `You are a personal assistant chatbot. Make sure to be concise and user-friendly. Help users with tasks such as setting reminders, providing weather updates, and answering general questions.Generate multiple response if needed.Conversation will be sequential so remember the previous prompt and response.previuos input was ${previousText} previuos response was ${responseText}.Check whether the new prompt and previous prompt have any relation.If yes generate content apporpriately.your question will be provided at the end of this prompt .question to respond is ${value}`;
     async function run() {
       try {
@@ -45,7 +45,7 @@ const ChatInterface = () => {
       }
     }
     run();
-  }, [value]);
+  }, [value , user?.email , responseText , previousText]);
 
   const startDate = new Date();
   startDate.setHours(0, 0, 0, 0);

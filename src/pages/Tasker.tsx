@@ -17,17 +17,17 @@ import { collection, addDoc, query, onSnapshot, DocumentData } from "firebase/fi
 import { db } from "../firebase/firebase";
 const Tasker = () => {
   const { user } = useAuthContext();
-  console.log("in tasker", user?.email);
-  const [ tasks , setTasks] = useState<DocumentData>()
+  console.log("in tasker", user?.email);////////////////////////////////////////////////
+  const [ tasks , setTasks] = useState<DocumentData[]>([])
   useEffect(() => {
-    const q = query(collection(db, "tasks"));
+    const q = query(collection(db, "tasks"));//get tasks
     const tasksData: DocumentData[] = [];
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       querySnapshot.forEach((doc) => {
         tasksData.push(doc.data());
       });
-      console.log( tasksData);
       setTasks(tasksData)
+      console.log( tasks);///////////////////////////////////////////////
     });
     return () => unsubscribe();
   }, []);
@@ -35,17 +35,18 @@ const Tasker = () => {
   //tasks
   const hello: boolean = true; //////////////////////////////////////////////////
   const [input, setInput] = useState<string>("");
-  console.log("input", input);
   const isError = input === "";
   const handleClick = async () => {
-    await addDoc(collection(db, "tasks"), {
-      task: input,
-      user: user?.email,
-      timestamp: new Date(),
-      status: "pending",
-    }).then(() => {
-      console.log("submitted");
-    });
+    try {
+      await addDoc(collection(db, "tasks"), {
+        task: input,
+        user: user?.email,
+        timestamp: new Date(),
+        status: "pending",
+      })
+    } catch (error : unknown) {
+      console.log(error)
+    }
   };
   return (
     <>
@@ -105,7 +106,7 @@ const Tasker = () => {
                         </FormErrorMessage>
                       )}
 
-                      <Button>Add</Button>
+                      <Button type="submit">Add</Button>
                     </FormControl>
                   </form>
                 </Flex>
