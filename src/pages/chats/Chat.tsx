@@ -28,7 +28,7 @@ const ChatInterface = () => {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   useEffect(() => {
     setPrevioustext(value);
-    const prompt = `You are a personal assistant chatbot. Make sure to be concise and user-friendly. Help users with tasks such as setting reminders, providing weather updates, and answering general questions.Generate multiple response if needed.Conversation will be sequential so remember the previous prompt and response.previuos input was ${previousText} previuos response was ${responseText}.Check whether the new prompt and previous prompt have any relation.If yes generate content apporpriately.your question will be provided at the end of this prompt .question to respond is ${value}`;
+    const prompt = `You are a personal ai assistant chatbot. Make sure to be concise and user-friendly. Help users with tasks such as setting reminders, providing weather updates, and answering general questions.Generate multiple response if needed.Conversation will be sequential so remember the previous prompt and response.previuos input was ${previousText} previuos response was ${responseText}.Check whether the new prompt and previous prompt have any relation.If yes generate content apporpriately.your question will be provided at the end of this prompt .question to respond is ${value}`;
     async function run() {
       try {
         const result = await model.generateContent(prompt);

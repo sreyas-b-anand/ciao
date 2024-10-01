@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-
+import {auth} from '../firebase/firebase'
 type ChildrenProps = {
   children: React.ReactNode;
 };
@@ -15,12 +15,29 @@ type ContextTypes = {
   user: User | null;
   dispatch: Dispatch<ActionTypes>;
 };
-import React, { createContext, Dispatch, useReducer } from "react";
+import React, { createContext, Dispatch, useEffect, useReducer } from "react";
 
 export const AuthContext = createContext<ContextTypes | null>(null);
 
 const AuthContextProvider = ({ children }: ChildrenProps) => {
   const initialUser: StateTypes = { user: null };
+   useEffect(()=>{
+    auth.onAuthStateChanged((userAuth : User | null) => {
+      console.log(userAuth);
+      if(userAuth){
+        dispatch({
+          type : 'LOGIN',
+          payload : userAuth
+        })
+      }
+      else{
+        dispatch({
+          type : 'LOGOUT',
+          payload : null
+        })
+      }
+    });
+   } , [])
   const authReducer = (state: StateTypes | null, action: ActionTypes) => {
     switch (action?.type) {
       case "LOGIN":

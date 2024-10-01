@@ -1,3 +1,11 @@
+interface TaskData {
+  id: string;
+  task: string;
+  user: string;
+  timestamp: Date;
+  status: string;
+}
+
 import {
   Button,
   Flex,
@@ -13,36 +21,50 @@ import useAuthContext from "../hooks/useAuthContext";
 import Tabbar from "../components/Navbar/Tabbar";
 import TaskCard from "../components/TaskerCard/TaskCard";
 import { useEffect, useState } from "react";
-import { collection, addDoc, query, onSnapshot, DocumentData } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import useTaskContext from "../hooks/useTaskContext";
 const Tasker = () => {
+  const {tasksData , dispatch} = useTaskContext()
   const { user } = useAuthContext();
   console.log("in tasker", user?.email);////////////////////////////////////////////////
-  const [ tasks , setTasks] = useState<DocumentData[]>([])
+  const [ tasks , setTasks] = useState<TaskData[]>([])
   useEffect(() => {
     const q = query(collection(db, "tasks"));//get tasks
-    const tasksData: DocumentData[] = [];
+    
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        tasksData.push(doc.data());
-      });
-      setTasks(tasksData)
-      console.log( tasks);///////////////////////////////////////////////
+     const taskData : TaskData[]= querySnapshot.docs.map((doc)=>({
+      id : doc.id,
+      ...doc.data()
+     }) as TaskData
+    )
+    setTasks(taskData)
+    dispatch({
+      type:'GET_TASKS',
+      payload : tasks
+    })
+    
+     ///////////////////////////////////////////////
     });
     return () => unsubscribe();
   }, []);
-
+  
   //tasks
   const hello: boolean = true; //////////////////////////////////////////////////
   const [input, setInput] = useState<string>("");
   const isError = input === "";
-  const handleClick = async () => {
+  const handleClick = async (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     try {
       await addDoc(collection(db, "tasks"), {
         task: input,
         user: user?.email,
         timestamp: new Date(),
         status: "pending",
+
+
+      }).then(()=>{
+       
       })
     } catch (error : unknown) {
       console.log(error)
@@ -106,7 +128,7 @@ const Tasker = () => {
                         </FormErrorMessage>
                       )}
 
-                      <Button type="submit">Add</Button>
+                      <Button   type="submit">Add</Button>
                     </FormControl>
                   </form>
                 </Flex>

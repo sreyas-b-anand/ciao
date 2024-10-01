@@ -28,32 +28,17 @@ const Register = () => {
   if (!authContext) {
     throw Error("Firebase error occured");
   }
-  const { dispatch } = authContext;
+  
   const handleAuth = async () => {
     try {
       if (isRegister) {
         await createUserWithEmailAndPassword(auth, email, password);
         // Registration successful
         setError(null);
-
-        await auth.onAuthStateChanged((userAuth) => {
-          console.log(userAuth);
-          dispatch({
-            type: "LOGIN",
-            payload: userAuth,
-          });
-        });
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         // Login successful
         setError(null);
-        await auth.onAuthStateChanged((userAuth) => {
-          console.log(userAuth);
-          dispatch({
-            type: "LOGIN",
-            payload: userAuth,
-          });
-        });
       }
       navigate("/dashboard");
     } catch (err) {
@@ -66,6 +51,7 @@ const Register = () => {
       clearTimeout(10);
     }
   };
+  
 
   return (
     <Container
