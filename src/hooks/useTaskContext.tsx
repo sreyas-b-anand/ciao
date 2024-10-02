@@ -7,6 +7,7 @@ const useTaskContext = () => {
     if(!context){
         throw new Error("Error fetching the data")
     }
+   
   return context
 }
 

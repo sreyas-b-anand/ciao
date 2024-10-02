@@ -19,57 +19,74 @@ import {
 import Navbar from "../components/Navbar/Navbar";
 import useAuthContext from "../hooks/useAuthContext";
 import Tabbar from "../components/Navbar/Tabbar";
-import TaskCard from "../components/TaskerCard/TaskCard";
-import { useEffect, useState } from "react";
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+
+import {  lazy, Suspense, useEffect, useState } from "react";
+import {
+  collection,
+  addDoc,
+  query,
+  onSnapshot,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import useTaskContext from "../hooks/useTaskContext";
+
+import Loading from "../components/loader/Loading";
+const TaskLoader = lazy(()=> import('../components/TaskerCard/TaskSection'))
 const Tasker = () => {
-  const {tasksData , dispatch} = useTaskContext()
+  const { taskState, dispatch } = useTaskContext();
+
+  console.log("taskdata", taskState);
   const { user } = useAuthContext();
-  console.log("in tasker", user?.email);////////////////////////////////////////////////
-  const [ tasks , setTasks] = useState<TaskData[]>([])
-  useEffect(() => {
-    const q = query(collection(db, "tasks"));//get tasks
-    
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-     const taskData : TaskData[]= querySnapshot.docs.map((doc)=>({
-      id : doc.id,
-      ...doc.data()
-     }) as TaskData
-    )
-    setTasks(taskData)
-    dispatch({
-      type:'GET_TASKS',
-      payload : tasks
-    })
-    
-     ///////////////////////////////////////////////
-    });
-    return () => unsubscribe();
-  }, []);
+  console.log("in tasker user", user?.email); ////////////////////////////////////////////////
+
   
-  //tasks
-  const hello: boolean = true; //////////////////////////////////////////////////
+  useEffect(() => {
+    if (!user?.email) return;
+
+    const q = query(collection(db, "tasks"), where("user", "==", user.email));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const taskData: TaskData[] = querySnapshot.docs.map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as TaskData)
+      );
+
+      // Dispatch only if taskData has changed
+      if (JSON.stringify(taskData) !== JSON.stringify(taskState.tasks)) {
+        dispatch({
+          type: "GET_TASKS",
+          payload: taskData,
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch, user?.email]);
+
+ 
   const [input, setInput] = useState<string>("");
   const isError = input === "";
-  const handleClick = async (e : React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       await addDoc(collection(db, "tasks"), {
         task: input,
         user: user?.email,
         timestamp: new Date(),
         status: "pending",
-
-
-      }).then(()=>{
-       
-      })
-    } catch (error : unknown) {
+      });
+    
+      setInput("");
+    } catch (error) {
       console.log(error)
+      
     }
   };
+  console.log("task state ",taskState)
   return (
     <>
       <Flex
@@ -93,57 +110,49 @@ const Tasker = () => {
           >
             Add Your To-Do's Here
           </Heading>
-          {user || hello ? (
+          {user ? (
             <>
               <Flex fontFamily={"Montserrat"} color={"white"}>
                 <Flex
-                  className="flexx"
                   flex={1}
                   alignItems={"center"}
                   gap={3}
                   justifyContent={"center"}
                 >
                   <form onSubmit={handleClick}>
-                    <FormControl
-                      isInvalid={isError}
-                      display={"flex"}
-                      gap={3}
-                      p={3}
-                      py={5}
-                    >
-                      <Input
-                        zIndex={4}
-                        isRequired={true}
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                      />
+                    <Flex alignItems={"baseline"} justifyContent={"center"}>
+                      <FormControl
+                        isInvalid={isError}
+                        display={"flex"}
+                        p={3}
+                        py={5}
+                        flexDir={"column"}
+                      >
+                        <Input
+                          zIndex={4}
+                          isRequired={true}
+                          value={input}
+                          onChange={(e) => setInput(e.target.value)}
+                        />
 
-                      {isError ? (
-                        <FormHelperText color={"brand.textSecondary"}>
-                          Enter your task
-                        </FormHelperText>
-                      ) : (
-                        <FormErrorMessage color={"brand.error"}>
-                          Required Field
-                        </FormErrorMessage>
-                      )}
-
-                      <Button   type="submit">Add</Button>
-                    </FormControl>
+                        {isError ? (
+                          <FormHelperText color={"brand.textSecondary"}>
+                            Enter your task
+                          </FormHelperText>
+                        ) : (
+                          <FormErrorMessage color={"brand.error"}>
+                            Required Field
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
+                      <Button type="submit">Add</Button>
+                    </Flex>
                   </form>
                 </Flex>
               </Flex>
-              <Flex
-                fontFamily={"Montserrat"}
-                flexWrap={"wrap"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                gap={3}
-                flex={1}
-                py={3}
-              >
-                <TaskCard el={1} />
-              </Flex>
+              <Suspense fallback={<Loading />}>
+                <TaskLoader taskState={taskState.tasks}/>
+              </Suspense>
             </>
           ) : (
             <>

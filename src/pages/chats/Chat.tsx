@@ -1,23 +1,17 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useState, useEffect, useRef } from "react";
-import {
-  Box,
-  Input,
-  Button,
-  VStack,
-  Text,
-  Flex,
-  Image,
-} from "@chakra-ui/react";
+import { useState, useEffect, lazy, Suspense } from "react";
+import { Input, Button, VStack, Text, Flex } from "@chakra-ui/react";
 import { db } from "../../firebase/firebase"; // Adjust the path as needed
 import { collection, addDoc } from "firebase/firestore";
 import Navbar from "../../components/Navbar/Navbar";
 import Tabbar from "../../components/Navbar/Tabbar";
 import useFetch from "../../hooks/useFetch";
-import aiLogo from "../../assets/ailogo/ch.jpeg";
-import { CgProfile } from "react-icons/cg";
-import useAuthContext from "../../hooks/useAuthContext";
 
+import useAuthContext from "../../hooks/useAuthContext";
+import Loading from "../../components/loader/Loading";
+const ChatLoader = lazy(
+  () => import("../../components/ChatComponents/ChatSection")
+);
 const ChatInterface = () => {
   const { user } = useAuthContext();
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
@@ -28,7 +22,7 @@ const ChatInterface = () => {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   useEffect(() => {
     setPrevioustext(value);
-    const prompt = `You are a personal ai assistant chatbot. Make sure to be concise and user-friendly. Help users with tasks such as setting reminders, providing weather updates, and answering general questions.Generate multiple response if needed.Conversation will be sequential so remember the previous prompt and response.previuos input was ${previousText} previuos response was ${responseText}.Check whether the new prompt and previous prompt have any relation.If yes generate content apporpriately.your question will be provided at the end of this prompt .question to respond is ${value}`;
+    const prompt = `You are a personal ai assistant chatbot. Make sure to be concise and user-friendly. Help users with tasks such as setting reminders, providing weather updates, and answering general questions.Only generate a maximum of two responses at a time.Conversation will be sequential so remember the previous prompt and response.previuos input was ${previousText} previuos response was ${responseText}.Check whether the new prompt and previous prompt have any relation.If yes generate content apporpriately.your question will be provided at the end of this prompt .question to respond is ${value}`;
     async function run() {
       try {
         const result = await model.generateContent(prompt);
@@ -45,24 +39,15 @@ const ChatInterface = () => {
       }
     }
     run();
-  }, [value , user?.email , responseText , previousText]);
+  }, [value, user]);
 
   const startDate = new Date();
   startDate.setHours(0, 0, 0, 0);
 
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
-
   const [input, setInput] = useState("");
 
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
   // Fetch messages from Firestore
   const { messages, error } = useFetch(true);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   const handleSend = async () => {
     try {
@@ -117,78 +102,9 @@ const ChatInterface = () => {
               flex={1}
               px={20}
             >
-              <Flex
-                maxHeight={"500px"}
-                borderWidth="1px"
-                borderRadius="lg"
-                padding="4"
-                overflow={"auto"}
-                direction={"column"}
-                flex={1}
-              >
-                {messages &&
-                  messages.map((msg) => (
-                    <Flex
-                      key={msg.id}
-                      alignItems={
-                        msg.sender == `${user?.email}assistant`
-                          ? "flex-start"
-                          : "flex-end"
-                      }
-                      justifyContent={
-                        msg.sender == `${user?.email}assistant`
-                          ? "flex-start"
-                          : "flex-end"
-                      }
-                    >
-                      <Flex
-                        gap={2}
-                        flexDirection={
-                          msg.sender == `${user?.email}assistant`
-                            ? "row"
-                            : "row-reverse"
-                        }
-                      >
-                        {msg.sender == `${user?.email}assistant` ? (
-                          <Image
-                            width={"30px"}
-                            height={"30px"}
-                            borderRadius={"50%"}
-                            src={aiLogo}
-                            alt="ai"
-                          />
-                        ) : (
-                          <CgProfile color="white" size={"30px"} />
-                        )}
-                        <Box
-                          display="inline-block"
-                          bg={
-                            msg.sender === `${user?.email}assistant`
-                              ? "green.300"
-                              : "blue.500"
-                          }
-                          color="white"
-                          borderRadius="md"
-                          padding="2"
-                          marginBottom="2"
-                        >
-                          {msg.text}
-                        </Box>
-                      </Flex>
-                    </Flex>
-                  ))}
-                <div ref={chatEndRef}></div>
-                {!messages && (
-                  <p className="w-[full] flex items-center justify-center p-1 text-white">
-                    No messages to show
-                  </p>
-                )}
-                {error && (
-                  <p className="w-[full] z-30 flex items-center justify-center p-1 text-white">
-                    {error}
-                  </p>
-                )}
-              </Flex>
+              <Suspense  fallback={<Loading />}>
+                <ChatLoader messages={messages} error={error} />
+              </Suspense>
               <Flex direction={"row"}>
                 <Input
                   color={"white"}

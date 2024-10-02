@@ -1,13 +1,16 @@
-import { useEffect, useRef } from "react";
+import { lazy, useEffect, useRef } from "react";
 
 import Navbar from "../../components/Navbar/Navbar";
 import useFetch from "../../hooks/useFetch";
 import Tabbar from "../../components/Navbar/Tabbar";
-import { Box, VStack, Text, Flex, Image } from "@chakra-ui/react";
-import aiLogo from "../../assets/ailogo/ch.jpeg";
-import { CgProfile } from "react-icons/cg";
-import useAuthContext from "../../hooks/useAuthContext";
+import { VStack, Text, Flex } from "@chakra-ui/react";
 
+import Loading from "../../components/loader/Loading";
+import { Suspense } from "react";
+import useAuthContext from "../../hooks/useAuthContext";
+const AllChatLoader = lazy(
+  () => import("../../components/ChatComponents/ChatSection")
+);
 const History = () => {
   const { user } = useAuthContext();
   const { messages, error } = useFetch(false);
@@ -51,78 +54,9 @@ const History = () => {
               flex={1}
               px={20}
             >
-              <Flex
-                maxHeight={"540px"}
-                borderWidth="1px"
-                borderRadius="lg"
-                padding="4"
-                overflow={"auto"}
-                direction={"column"}
-                flex={1}
-              >
-                {messages &&
-                  messages.map((msg) => (
-                    <Flex
-                      key={msg.id}
-                      alignItems={
-                        msg.sender == `${user?.email}assistant`
-                          ? "flex-start"
-                          : "flex-end"
-                      }
-                      justifyContent={
-                        msg.sender == `${user?.email}assistant`
-                          ? "flex-start"
-                          : "flex-end"
-                      }
-                    >
-                      <Flex
-                        gap={2}
-                        flexDirection={
-                          msg.sender == `${user?.email}assistant`
-                            ? "row"
-                            : "row-reverse"
-                        }
-                      >
-                        {msg.sender == `${user?.email}assistant` ? (
-                          <Image
-                            width={"30px"}
-                            height={"30px"}
-                            borderRadius={"50%"}
-                            src={aiLogo}
-                            alt="ai"
-                          />
-                        ) : (
-                          <CgProfile color="white" size={"30px"} />
-                        )}
-                        <Box
-                          display="inline-block"
-                          bg={
-                            msg.sender === `${user?.email}assistant`
-                              ? "green.300"
-                              : "blue.500"
-                          }
-                          color="white"
-                          borderRadius="md"
-                          padding="2"
-                          marginBottom="2"
-                        >
-                          {msg.text}
-                        </Box>
-                      </Flex>
-                    </Flex>
-                  ))}
-                <div ref={chatEndRef}></div>
-                {!messages && (
-                  <p className="w-[full] flex items-center justify-center p-1 text-white">
-                    No messages to show
-                  </p>
-                )}
-                {error && (
-                  <p className="w-[full] flex items-center justify-center p-1 text-white">
-                    {error}
-                  </p>
-                )}
-              </Flex>
+              <Suspense fallback={<Loading />}>
+                <AllChatLoader messages={messages} error={error} />
+              </Suspense>
             </VStack>
           </Flex>
         ) : (

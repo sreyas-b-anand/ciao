@@ -4,12 +4,10 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const useAuthContext = () => {
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
+  const context = useContext(AuthContext);
+  if (!context) {
     throw new Error("Firebase authentication error");
   }
-  const context = authContext;
-
   return context;
 };
 
