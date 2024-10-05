@@ -28,7 +28,7 @@ const taskReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case "GET_TASKS":
       return {
-        tasks: (action.payload as TaskData[]) , // Ensure tasks is always an array
+        tasks: action.payload as TaskData[], // Ensure tasks is always an array
       };
 
     case "DELETE_TASK":
@@ -37,8 +37,6 @@ const taskReducer = (state: StateType, action: ActionType) => {
           (task) => task.id !== (action.payload as TaskData)?.id
         ), // Adjusted for a single task deletion
       };
-
- 
 
     default:
       return state;
