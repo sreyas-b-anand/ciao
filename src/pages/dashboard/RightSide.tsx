@@ -1,9 +1,8 @@
-import { Flex, Stack , Text } from "@chakra-ui/react";
+import { Flex, Stack  } from "@chakra-ui/react";
 import ChatNavCard from "../../components/ChatNav/ChatNavCard";
 import WeatherCard from "../../components/Weather/WeatherCard";
 import Welcome from "../../components/welcome/Welcome";
 import useTaskContext from "../../hooks/useTaskContext";
-import TaskCardDashboard from "../../components/TaskerCard/TaskCardDashboard";
 import { useEffect, useState } from "react";
 
 type TaskType = {
