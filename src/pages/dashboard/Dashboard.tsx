@@ -27,7 +27,7 @@ const Dashboard = () => {
           </Flex>
         )}
         {!user && (
-          <Flex flex={1} flexDirection={'column'} p={3}>
+          <Flex flex={1} flexDirection={"column"} p={3}>
             <Tabbar flexProp={1} />
             <Flex
               flex={1}

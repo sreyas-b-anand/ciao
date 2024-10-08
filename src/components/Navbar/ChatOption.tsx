@@ -1,4 +1,3 @@
-
 import {
   Accordion,
   AccordionButton,
@@ -12,21 +11,19 @@ import { Link } from "react-router-dom";
 const ChatOption = () => {
   return (
     <>
-      <Accordion
-        allowToggle
-       
-        textAlign={"left"}
-      >
+      <Accordion allowToggle textAlign={"left"}>
         <AccordionItem
           border={"none"}
           display={"flex"}
           flexDirection={"column"}
           pl={0}
           textAlign={"left"}
-         >
+        >
           <h2>
             <AccordionButton pl={0}>
-              <Box as="span" flex="1" textAlign="left" >Chat</Box>
+              <Box as="span" flex="1" textAlign="left">
+                Chat
+              </Box>
               <AccordionIcon />
             </AccordionButton>
           </h2>
