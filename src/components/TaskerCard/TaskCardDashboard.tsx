@@ -3,7 +3,7 @@ type TaskType = {
   task: string;
   user: string | null;
   timestamp: Date;
-  status: string;
+  status: boolean;
 };
 
 import { Flex, Text } from "@chakra-ui/react";

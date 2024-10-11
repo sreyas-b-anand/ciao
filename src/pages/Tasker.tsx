@@ -1,10 +1,11 @@
 interface TaskData {
-  id: string;
+  id: string ;
   task: string;
-  user: string;
+  user: string | null;
   timestamp: Date;
-  status: string;
+  status: boolean; // Change status to boolean
 }
+
 
 import {
   Button,
@@ -17,10 +18,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar/Navbar";
+
 import useAuthContext from "../hooks/useAuthContext";
 import Tabbar from "../components/Navbar/Tabbar";
 
-import {  lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   collection,
   addDoc,
@@ -32,7 +34,7 @@ import { db } from "../firebase/firebase";
 import useTaskContext from "../hooks/useTaskContext";
 
 import Loading from "../components/loader/Loading";
-const TaskLoader = lazy(()=> import('../components/TaskerCard/TaskSection'))
+const TaskLoader = lazy(() => import("../components/TaskerCard/TaskSection"));
 const Tasker = () => {
   const { taskState, dispatch } = useTaskContext();
 
@@ -40,10 +42,10 @@ const Tasker = () => {
   const { user } = useAuthContext();
   console.log("in tasker user", user?.email); ////////////////////////////////////////////////
 
-  
   useEffect(() => {
-    if (!user?.email) return;
-
+    if (!user) {
+      return; // Skip further execution if no user is logged in
+    }
     const q = query(collection(db, "tasks"), where("user", "==", user.email));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -67,7 +69,6 @@ const Tasker = () => {
     return () => unsubscribe();
   }, [dispatch, user?.email]);
 
- 
   const [input, setInput] = useState<string>("");
   const isError = input === "";
   const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -77,16 +78,15 @@ const Tasker = () => {
         task: input,
         user: user?.email,
         timestamp: new Date(),
-        status: "pending",
+        status: false,
       });
-    
+
       setInput("");
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
   };
-  console.log("task state ",taskState)
+  console.log("task state ", taskState);
   return (
     <>
       <Flex
@@ -151,7 +151,7 @@ const Tasker = () => {
                 </Flex>
               </Flex>
               <Suspense fallback={<Loading />}>
-                <TaskLoader taskState={taskState.tasks}/>
+                <TaskLoader taskState={taskState.tasks} />
               </Suspense>
             </>
           ) : (

@@ -3,7 +3,7 @@ interface TaskType {
   task: string;
   user: string | null;
   timestamp: Date;
-  status: string;
+  status: boolean;
 }
 import { Flex } from "@chakra-ui/react";
 import TaskCard from "./TaskCard";
@@ -27,7 +27,7 @@ const TaskSection = ({ taskState }: { taskState: TaskType[] }) => {
                 task: string;
                 user: string | null;
                 timestamp: Date;
-                status: string;
+                status: boolean;
               },
               index: number
             ) => <TaskCard task={task} key={index} />

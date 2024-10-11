@@ -3,18 +3,24 @@ import { Link, useNavigate } from "react-router-dom";
 import ChatOption from "./ChatOption";
 import { auth } from "../../firebase/firebase";
 import useAuthContext from "../../hooks/useAuthContext";
+import useTaskContext from "../../hooks/useTaskContext";
 
 const Navbar = () => {
- const {dispatch } = useAuthContext()
+ const authContext = useAuthContext()
+ const taskcontext = useTaskContext()
   const navigate = useNavigate();
   const handleClick = () => {
     auth
       .signOut()
       .then(() => {
-        dispatch({
+        authContext.dispatch({
           type: "LOGOUT",
           payload: null,
         });
+        taskcontext.dispatch({
+          type: "GET_TASKS",
+          payload: [],
+        })
         navigate("/");
       })
       .catch((err: Error) => {

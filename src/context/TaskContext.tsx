@@ -1,11 +1,12 @@
 import React, { createContext, Dispatch, useReducer } from "react";
 
+
 interface TaskData {
-  id: string; // Keep it as a string for better consistency
+  id: string;
   task: string;
   user: string | null;
   timestamp: Date;
-  status: string;
+  status: boolean; // Change status to boolean
 }
 
 type ActionType = {
