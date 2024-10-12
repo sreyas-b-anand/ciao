@@ -1,9 +1,9 @@
 import { Flex } from "@chakra-ui/react";
-import Navbar from "../../components/Navbar/Navbar";
 import RightSide from "./RightSide";
 
 import useAuthContext from "../../hooks/useAuthContext";
 import Tabbar from "../../components/Navbar/Tabbar";
+import Navbar from "../../components/Navbar/Navbar";
 
 const Dashboard = () => {
   const { user } = useAuthContext();
@@ -14,12 +14,13 @@ const Dashboard = () => {
       <Flex
         flexWrap={"wrap"}
         gap={2}
-        minWidth={"100vw"}
-        minHeight={"100vh"}
+        maxWidth={"100vw"}
+        maxHeight={"100vh"}
         padding={0}
         backgroundColor={"brand.background"}
+        overflowY={'hidden'}
       >
-        <Navbar />
+       <Navbar />
         {user && (
           <Flex flex={1} flexDirection={"column"} p={3}>
             <Tabbar flexProp={1} />

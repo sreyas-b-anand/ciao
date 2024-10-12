@@ -1,11 +1,10 @@
 interface TaskData {
-  id: string ;
+  id: string;
   task: string;
   user: string | null;
   timestamp: Date;
   status: boolean; // Change status to boolean
 }
-
 
 import {
   Button,
@@ -17,10 +16,9 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
-import Navbar from "../components/Navbar/Navbar";
 
-import useAuthContext from "../hooks/useAuthContext";
-import Tabbar from "../components/Navbar/Tabbar";
+import useAuthContext from "../../hooks/useAuthContext";
+import Tabbar from "../../components/Navbar/Tabbar";
 
 import { lazy, Suspense, useEffect, useState } from "react";
 import {
@@ -30,11 +28,14 @@ import {
   onSnapshot,
   where,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import useTaskContext from "../hooks/useTaskContext";
+import { db } from "../../firebase/firebase";
+import useTaskContext from "../../hooks/useTaskContext";
 
-import Loading from "../components/loader/Loading";
-const TaskLoader = lazy(() => import("../components/TaskerCard/TaskSection"));
+import Loading from "../../components/loader/Loading";
+import Navbar from "../../components/Navbar/Navbar";
+const TaskLoader = lazy(
+  () => import("../../components/TaskerCard/TaskSection")
+);
 const Tasker = () => {
   const { taskState, dispatch } = useTaskContext();
 
@@ -44,9 +45,13 @@ const Tasker = () => {
 
   useEffect(() => {
     if (!user) {
-      return; // Skip further execution if no user is logged in
+      return;
     }
-    const q = query(collection(db, "tasks"), where("user", "==", user.email));
+    const q = query(
+      collection(db, "tasks"),
+      where("user", "==", user.email),
+      where("status", "==", false)
+    );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const taskData: TaskData[] = querySnapshot.docs.map(
@@ -57,7 +62,6 @@ const Tasker = () => {
           } as TaskData)
       );
 
-      // Dispatch only if taskData has changed
       if (JSON.stringify(taskData) !== JSON.stringify(taskState.tasks)) {
         dispatch({
           type: "GET_TASKS",
@@ -99,7 +103,6 @@ const Tasker = () => {
         zIndex={-2}
       >
         <Navbar />
-
         <Flex flex={1} direction={"column"} p={3}>
           <Tabbar flexProp={1} />
           <Heading

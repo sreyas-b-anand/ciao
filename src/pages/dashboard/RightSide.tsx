@@ -2,29 +2,11 @@ import { Flex, Stack } from "@chakra-ui/react";
 import ChatNavCard from "../../components/ChatNav/ChatNavCard";
 import WeatherCard from "../../components/Weather/WeatherCard";
 import Welcome from "../../components/welcome/Welcome";
-import useTaskContext from "../../hooks/useTaskContext";
-import { useEffect, useState } from "react";
 
-type TaskType = {
-  id: string;
-  task: string;
-  user: string | null;
-  timestamp: Date;
-  status: string;
-};
+
 
 const RightSide = () => {
-  const { taskState } = useTaskContext();
-  const [taskInfo, setTaskInfo] = useState<TaskType[]>([]);
 
-  useEffect(() => {
-    if (taskState.tasks && taskState.tasks.length > 0) {
-      const lastTwoTasks = taskState.tasks.slice(-2); // Get the last two tasks
-      setTaskInfo(lastTwoTasks); // Update the taskInfo with the last two tasks
-    }
-  }, [taskState]);
-
-  console.log(taskInfo); // Ensure to check the logs for the updated taskInfo array
 
   return (
     <Flex direction={"column"} gap={1} flex={1} p={3} fontFamily={"Montserrat"}>

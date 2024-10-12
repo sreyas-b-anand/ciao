@@ -1,3 +1,11 @@
+type LinkType = {
+  title: string;
+  href1: string;
+  href2: string;
+  cover1: string;
+  cover2: string;
+};
+
 import {
   Accordion,
   AccordionButton,
@@ -8,7 +16,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-const ChatOption = () => {
+const AccordionLink = ({title , href1,  href2 , cover1 , cover2}: LinkType) => {
   return (
     <>
       <Accordion allowToggle textAlign={"left"}>
@@ -22,7 +30,7 @@ const ChatOption = () => {
           <h2>
             <AccordionButton pl={0}>
               <Box as="span" flex="1" textAlign="left">
-                Chat
+                {title}
               </Box>
               <AccordionIcon />
             </AccordionButton>
@@ -34,8 +42,8 @@ const ChatOption = () => {
               flexDirection={"column"}
               gap={3}
             >
-              <Link to={"/chat"}>Chat with CIAO</Link>
-              <Link to={"/history"}>Your History </Link>
+              <Link to={href1}>{cover1}</Link>
+              <Link to={href2}>{cover2} </Link>
             </Flex>
           </AccordionPanel>
         </AccordionItem>
@@ -44,4 +52,4 @@ const ChatOption = () => {
   );
 };
 
-export default ChatOption;
+export default AccordionLink;

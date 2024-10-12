@@ -6,15 +6,19 @@ interface TaskType {
   status: boolean;
 }
 
-import { Flex, Text, Button, Input } from "@chakra-ui/react";
-import { MdDelete } from "react-icons/md";
-import { doc, deleteDoc } from "firebase/firestore";
+import { Flex, Text, Button } from "@chakra-ui/react";
+import { MdDelete, MdDone } from "react-icons/md";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import useTaskContext from "../../hooks/useTaskContext";
-import { useState } from "react";
 
 const TaskCard = ({ task }: { task: TaskType }) => {
-  const [statusTask , setStatusTask] = useState(task.status)
+  const handleClick = async () => {
+    await updateDoc(doc(db, "tasks", task.id), {
+      status: true,
+    });
+    
+  };
   const { dispatch } = useTaskContext();
   const handleDelete = async () => {
     await deleteDoc(doc(db, "tasks", task.id));
@@ -22,6 +26,7 @@ const TaskCard = ({ task }: { task: TaskType }) => {
       type: "DELETE_TASK",
       payload: task,
     });
+    
   };
 
   return (
@@ -33,7 +38,6 @@ const TaskCard = ({ task }: { task: TaskType }) => {
         alignItems={"center"}
         direction={"column"}
         width={"280px"}
-        
         bg={"brand.secondary"}
       >
         <Flex
@@ -44,9 +48,9 @@ const TaskCard = ({ task }: { task: TaskType }) => {
           justifyContent={"space-between"}
         >
           <Text>{task.task}</Text>
-          <input type="checkbox" id="myCheck"  onClick={()=> console.log("Hello")}/>
+          <Button p={0} _hover={'none'} background={'transparent'} onClick={handleClick}><MdDone color="white" size={25} /></Button>
           <Flex _hover={{ cursor: "pointer" }}>
-            <MdDelete  onClick={handleDelete} />
+            <MdDelete onClick={handleDelete} />
           </Flex>
         </Flex>
 
